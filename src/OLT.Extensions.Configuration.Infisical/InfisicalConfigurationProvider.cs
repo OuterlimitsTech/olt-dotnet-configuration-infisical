@@ -81,7 +81,6 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
         }
         finally
         {
-            //_source.Refresher.SetProvider(this);
             this._isInitialLoadComplete = true;
         }
     }
