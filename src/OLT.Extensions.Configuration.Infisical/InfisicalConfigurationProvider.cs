@@ -117,7 +117,10 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
         {
             Environment = _source.InfisicalOptions.Environment,
             ProjectId = _source.InfisicalOptions.ProjectId,
+            Path = _source.InfisicalOptions.Path,
+            Recursive = _source.InfisicalOptions.Recursive
         };
+
         try
         {
             return _infisicalClient.Value.ListSecrets(request).ToFrozenDictionary(s => s.SecretKey);

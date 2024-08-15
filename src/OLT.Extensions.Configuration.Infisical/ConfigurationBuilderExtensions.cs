@@ -80,7 +80,7 @@ public static class ConfigurationBuilderExtensions
         ArgumentException.ThrowIfNullOrEmpty(source.InfisicalOptions.ClientSecret, "InfisicalOptions.ClientSecret");
         ArgumentException.ThrowIfNullOrEmpty(source.InfisicalOptions.SiteUrl, "InfisicalOptions.SiteUrl");
         ArgumentException.ThrowIfNullOrEmpty(source.InfisicalOptions.ProjectId, "InfisicalOptions.ProjectId");
-
+        
         return builder.Add(source);
     }
 
