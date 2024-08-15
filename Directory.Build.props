@@ -3,10 +3,10 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <Company>OuterLimits Technologies, Inc</Company>
-    <Product>Swagger extensions and builders with Versioning</Product>
+    <Product>Configuration provider for Infisical</Product>
     <Authors>Chris Straw</Authors>
     <Copyright>Copyright © 2003-2024, OuterLimits Technologies, Inc Plainfield, IN</Copyright>
-    <RepositoryUrl>https://github.com/OuterlimitsTech/olt-dotnet-extensions-swagger</RepositoryUrl>
+    <RepositoryUrl>https://github.com/OuterlimitsTech/olt-dotnet-configuration-infisical</RepositoryUrl>
     <PackageIcon>icon.png</PackageIcon>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <DebugType>embedded</DebugType>
