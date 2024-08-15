@@ -1,0 +1,40 @@
+name: "Release"
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+env:
+  PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
+  SOURCE_DIRECTORY: ${{ github.workspace }}
+  SOLUTION_FILE: "OLT.Extensions.Configuration.Infisical.sln"
+  NUGET_SOURCE_URL: "https://api.nuget.org/v3/index.json"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3.5.3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4.0.0
+        with:
+          dotnet-version: |
+            8.0.x
+
+      - name: Get Version
+        id: version
+        uses: battila7/get-version-action@v2.2.1
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }}
+
+      - name: Build
+        run: dotnet build ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --configuration Release -p:Version=${{ steps.version.outputs.version-without-v }} --no-restore
+
+      - name: "Pack project"
+        run: dotnet pack ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+
+      - name: "Push package"
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/**/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }}

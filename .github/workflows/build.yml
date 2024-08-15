@@ -1,0 +1,66 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+
+  workflow_dispatch:
+  #   branches:
+  #     - master
+  #     - feature/**
+
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  SOURCE_DIRECTORY: ${{ github.workspace }}
+  SOLUTION_FILE: "OLT.Extensions.Configuration.Infisical.sln"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      # - name: Set up JDK 11
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     distribution: 'zulu'
+      #     java-version: '17'
+
+      - uses: actions/checkout@v3.5.3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4.0.0
+        with:
+          dotnet-version: |
+            8.0.x
+
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v8.0.1
+
+      # # https://www.seeleycoder.com/blog/sonarqube-with-github-actions-and-net-core-5-x/
+      # # this process reads the .config -> dotnet-tools.json to restore packages
+      # - name: Sonarqube Begin
+      #   run: |
+      #     dotnet tool restore          
+      #     dotnet tool run dotnet-sonarscanner begin /k:"OuterlimitsTech_olt-dotnet-configuration-infisical" /o:"outerlimitstech" /d:sonar.login=${{ secrets.SONAR_TOKEN }} /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.coverage.exclusions="**Test*.cs" /d:sonar.branch.name=${{ steps.branch-name.outputs.current_branch }}
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }}
+
+      - name: Build
+        run: dotnet build ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --configuration "Release" --no-restore
+
+      - name: Test
+        run: dotnet test ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --no-build --verbosity normal --no-restore --configuration "Release" --collect:"XPlat Code Coverage" --logger "trx;LogFilePrefix=unittests" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        env:
+          ASPNETCORE_ENVIRONMENT: Test
+          DOTNET_ENVIRONMENT: Test
+
+      # - name: Sonarqube end
+      #   run: dotnet tool run dotnet-sonarscanner end /d:sonar.login=${{ secrets.SONAR_TOKEN }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
