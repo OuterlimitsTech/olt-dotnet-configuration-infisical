@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{32812D02-C60F-4F2E-8980-84B45BF62EA8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Extensions.Configuration.Infisical", "src\OLT.Extensions.Configuration.Infisical\OLT.Extensions.Configuration.Infisical.csproj", "{3E404E6B-768E-4C80-96EC-F7811CF1D765}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{94E97D3A-7548-4EBE-B245-2CAE63E0149C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Extensions.Configuration.Infisical.Tests", "tests\OLT.Extensions.Configuration.Infisical.Tests\OLT.Extensions.Configuration.Infisical.Tests.csproj", "{3214F245-4E46-496B-A531-C5254B29AC01}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BC653805-F2EB-4037-B731-31C1AF5066FB}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3E404E6B-768E-4C80-96EC-F7811CF1D765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E404E6B-768E-4C80-96EC-F7811CF1D765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E404E6B-768E-4C80-96EC-F7811CF1D765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E404E6B-768E-4C80-96EC-F7811CF1D765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3214F245-4E46-496B-A531-C5254B29AC01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3214F245-4E46-496B-A531-C5254B29AC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3214F245-4E46-496B-A531-C5254B29AC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3214F245-4E46-496B-A531-C5254B29AC01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3E404E6B-768E-4C80-96EC-F7811CF1D765} = {32812D02-C60F-4F2E-8980-84B45BF62EA8}
+		{3214F245-4E46-496B-A531-C5254B29AC01} = {94E97D3A-7548-4EBE-B245-2CAE63E0149C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {43EFE665-3F36-4E3C-A407-D3482A2D25D6}
+	EndGlobalSection
+EndGlobal
