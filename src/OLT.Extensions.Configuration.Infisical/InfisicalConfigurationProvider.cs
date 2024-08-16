@@ -18,10 +18,6 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
     private int _networkOperationsInProgress;
     
 
-    private ILogger? _logger;
-    private ILoggerFactory _loggerFactory = default!;
-
-
     public InfisicalConfigurationProvider(InfisicalConfigurationSource source)
     {
         _source = source ?? throw new ArgumentNullException(nameof(source));
@@ -52,15 +48,6 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
 
     }
 
-    public ILoggerFactory LoggerFactory
-    {
-        get => this._loggerFactory;
-        set
-        {
-            this._loggerFactory = value;
-            this._logger = this._loggerFactory.CreateLogger("OLT.Extensions.Configuration.Infisical.Provider");
-        }
-    }
 
     public override void Load()
     {
@@ -126,13 +113,13 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
             return _infisicalClient.Value.ListSecrets(request).ToFrozenDictionary(s => s.SecretKey);
         }
         catch (InfisicalException ex)
-        {
-            _logger?.LogWarning(ex, "Failed to Load Secrets");
+        {            
+            //_logger?.LogWarning(ex, "Failed to Load Secrets");
             throw;
         }
         catch(Exception ex)
         {
-            _logger?.LogWarning(ex, "A refresh operation failed");
+            //_logger?.LogWarning(ex, "A refresh operation failed");
             throw;
         }
     }
@@ -152,11 +139,11 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
         }
         catch (InfisicalException ex)
         {
-            _logger?.LogWarning(ex, "A refresh operation failed");
+            //_logger?.LogWarning(ex, "A refresh operation failed");
         }
         catch(Exception ex)
         {
-            _logger?.LogWarning(ex, "A refresh operation failed");
+            //_logger?.LogWarning(ex, "A refresh operation failed");
         }
         finally
         {

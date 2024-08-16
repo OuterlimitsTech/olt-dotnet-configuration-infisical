@@ -37,4 +37,4 @@ public class InfisicalOptions
     /// </remarks>
     public string Environment { get; set; } = "Development";
 }
-    
+
