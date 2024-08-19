@@ -2,6 +2,29 @@
 
 public class InfisicalOptions
 {
+    public InfisicalOptions()
+    {
+        
+    }
+
+    public InfisicalOptions(string clientId, string clientSecret, string projectId, string environment)
+    {        
+        ClientId = clientId;
+        ClientSecret = clientSecret;
+        ProjectId = projectId;
+        Environment = environment;
+    }
+
+    public InfisicalOptions(string clientId, string clientSecret, string projectId, string environment, string path, bool recursive)
+    {
+        ClientId = clientId;
+        ClientSecret = clientSecret;
+        ProjectId = projectId;
+        Environment = environment;
+        Path = path;
+        Recursive = recursive;
+    }
+
     /// <summary>
     /// Infisical endpoint
     /// </summary>
