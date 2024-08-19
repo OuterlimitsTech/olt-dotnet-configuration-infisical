@@ -1,6 +1,6 @@
 # .NET Configuration Extensions for Infisical 
 
-## OLT.Extensions.Configuration.Infisical is a configuration provider for the .NET Core that allows developers to use [Infisical(https://infisical.com/)] as a configuration source in their applications.
+### OLT.Extensions.Configuration.Infisical is a configuration provider for the .NET Core that allows developers to use [Infisical(https://infisical.com/)] as a configuration source in their applications.
 
 [![Nuget](https://img.shields.io/nuget/v/OLT.Extensions.Configuration.Infisical)](https://www.nuget.org/packages/OLT.Extensions.Configuration.Infisical)
 
