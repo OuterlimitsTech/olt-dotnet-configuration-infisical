@@ -80,7 +80,8 @@ builder.Configuration
 
 ```
 
-To use JSON namespacing, the keys of the secrets need to include ":" to represent nested keys in an `appsettings.json.`
+#### To use JSON namespacing, the keys of the secrets need to include ":" to represent nested keys in an `appsettings.json.`
+
 ![image](https://github.com/user-attachments/assets/af35617a-697d-4ba9-b2a3-e3e5a7cc7365)
 
 ![image](https://github.com/user-attachments/assets/90bc6b9d-8f69-4743-83b4-2340c3ac9007)
