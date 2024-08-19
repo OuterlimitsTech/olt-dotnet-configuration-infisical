@@ -1,6 +1,6 @@
 # .NET Configuration Extensions for Infisical 
 
-### OLT.Extensions.Configuration.Infisical is a configuration provider for the .NET Core that allows developers to use [Infisical(https://infisical.com/)] as a configuration source in their applications.
+### OLT.Extensions.Configuration.Infisical is a configuration provider for the .NET Core that allows developers to use [Infisical](https://infisical.com/) as a configuration source in their applications.
 
 [![Nuget](https://img.shields.io/nuget/v/OLT.Extensions.Configuration.Infisical)](https://www.nuget.org/packages/OLT.Extensions.Configuration.Infisical)
 
@@ -82,7 +82,8 @@ builder.Configuration
 
 ---
 
-### To use JSON namespacing, the keys of the secrets need to include ":" to represent nested keys and uncheck the Auto Capitalization under project settings.
+
+#### To use JSON namespacing, the keys of the secrets need to include ":" to represent nested keys and uncheck the Auto Capitalization under project settings.
 
 
 ![image](https://github.com/user-attachments/assets/90bc6b9d-8f69-4743-83b4-2340c3ac9007)
