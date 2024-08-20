@@ -59,5 +59,6 @@ public class InfisicalOptions
     /// Default is "Development"
     /// </remarks>
     public string Environment { get; set; } = "Development";
+    
 }
 
