@@ -10,7 +10,8 @@ public class InfisicalConfigurationSource : IConfigurationSource
     public InfisicalOptions InfisicalOptions { get; set; } = new InfisicalOptions();
 
     public IConfigurationProvider Build(IConfigurationBuilder builder)
-    {
+    {             
         return new InfisicalConfigurationProvider(this);
-    }
+    }   
+   
 }

@@ -21,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
-    .AddInfisical(options, "E2BCF5B2-0000-0000-0000-000000009876", "---ClientSecret---", "47C230B4-0000-0000-0000-000000001234", "prod", false, TimeSpan.FromMinutes(10));
+    .AddInfisical(options, "e2bcf5b2-0000-0000-0000-000000009876", "---ClientSecret---", "47c230b4-0000-0000-0000-000000001234", "prod", false, TimeSpan.FromMinutes(10));
 
 ```
 
@@ -33,9 +33,9 @@ using OLT.Extensions.Configuration.Infisical;
 
 var options = new InfisicalOptions
 {
-    ClientId = "E2BCF5B2-0000-0000-0000-000000009876",
+    ClientId = "e2bcf5b2-0000-0000-0000-000000009876",
     ClientSecret = "---ClientSecret---",
-    ProjectId = "47C230B4-0000-0000-0000-000000001234",
+    ProjectId = "47c230b4-0000-0000-0000-000000001234",
     Environment = "dev",
     Recursive = true
 };
@@ -55,9 +55,9 @@ using OLT.Extensions.Configuration.Infisical;
 
 var sharedOptions = new InfisicalOptions
 {
-    ClientId = "E2BCF5B2-0000-0000-0000-000000009876",
+    ClientId = "e2bcf5b2-0000-0000-0000-000000009876",
     ClientSecret = "---ClientSecret---",
-    ProjectId = "47C230B4-0000-0000-0000-000000001234",
+    ProjectId = "47c230b4-0000-0000-0000-000000001234",
     Environment = "staging",
     Path = "/Shared"
     Recursive = true
@@ -67,9 +67,42 @@ builder.AddInfisical(sharedOptions, true, TimeSpan.FromMinutes(10));
 
 var appOptions = new InfisicalOptions
 {
-    ClientId = "E2BCF5B2-0000-0000-0000-000000009876",
+    ClientId = "e2bcf5b2-0000-0000-0000-000000009876",
     ClientSecret = "---ClientSecret---",
-    ProjectId = "47C230B4-0000-0000-0000-000000001234",
+    ProjectId = "47c230b4-0000-0000-0000-000000001234",
+    Environment = "staging",
+    Path = "/App1"
+};
+
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddInfisical(appOptions, false, TimeSpan.FromMinutes(10));
+
+```
+
+
+### Build Infisical Options from Connection String 
+
+```csharp
+using OLT.Extensions.Configuration.Infisical;
+
+var sharedOptions = new InfisicalOptions
+{
+    ClientId = "e2bcf5b2-0000-0000-0000-000000009876",
+    ClientSecret = "---ClientSecret---",
+    ProjectId = "47c230b4-0000-0000-0000-000000001234",
+    Environment = "staging",
+    Path = "/Shared"
+    Recursive = true
+};
+
+builder.AddInfisical(sharedOptions, true, TimeSpan.FromMinutes(10));
+
+var appOptions = new InfisicalOptions
+{
+    ClientId = "e2bcf5b2-0000-0000-0000-000000009876",
+    ClientSecret = "---ClientSecret---",
+    ProjectId = "47c230b4-0000-0000-0000-000000001234",
     Environment = "staging",
     Path = "/App1"
 };

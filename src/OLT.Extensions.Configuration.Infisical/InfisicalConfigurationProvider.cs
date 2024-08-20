@@ -13,7 +13,7 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
     private readonly Timer? _refreshTimer;
 
 
-    private static readonly TimeSpan MinDelayForUnhandledFailure = TimeSpan.FromSeconds(5.0);
+    private static readonly TimeSpan MinDelayForUnhandledFailure = TimeSpan.FromSeconds(5);
     private bool _isInitialLoadComplete;
     private int _networkOperationsInProgress;
     
@@ -21,7 +21,12 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
     public InfisicalConfigurationProvider(InfisicalConfigurationSource source)
     {
         _source = source ?? throw new ArgumentNullException(nameof(source));
-        
+
+        ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.SiteUrl, "InfisicalOptions.SiteUrl");
+        ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.ClientId, "InfisicalOptions.ClientId");
+        ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.ClientSecret, "InfisicalOptions.ClientSecret");        
+        ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.Environment, "InfisicalOptions.Environment");
+        ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.ProjectId, "InfisicalOptions.ProjectId");
 
         _infisicalClient = new Lazy<InfisicalClient>(() =>
         {
@@ -108,20 +113,7 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
             Recursive = _source.InfisicalOptions.Recursive
         };
 
-        try
-        {
-            return _infisicalClient.Value.ListSecrets(request).ToFrozenDictionary(s => s.SecretKey);
-        }
-        catch (InfisicalException ex)
-        {            
-            //_logger?.LogWarning(ex, "Failed to Load Secrets");
-            throw;
-        }
-        catch(Exception ex)
-        {
-            //_logger?.LogWarning(ex, "A refresh operation failed");
-            throw;
-        }
+        return _infisicalClient.Value.ListSecrets(request).ToFrozenDictionary(s => s.SecretKey);
     }
 
     private void OnTimerElapsed(object? state)
@@ -137,13 +129,12 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
         {
             Load(true);
         }
-        catch (InfisicalException ex)
+        catch
         {
-            //_logger?.LogWarning(ex, "A refresh operation failed");
-        }
-        catch(Exception ex)
-        {
-            //_logger?.LogWarning(ex, "A refresh operation failed");
+            if (!_source.Optional)
+            {
+                throw;
+            }                
         }
         finally
         {

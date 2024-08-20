@@ -58,6 +58,5 @@ namespace OLT.Extensions.Configuration.Infisical.Tests
                 .AddInMemoryCollection(dict)
                 .Build();
         }
-
     }
 }

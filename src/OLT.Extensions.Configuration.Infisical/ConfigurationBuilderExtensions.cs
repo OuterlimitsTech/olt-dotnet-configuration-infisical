@@ -3,8 +3,7 @@
 namespace OLT.Extensions.Configuration.Infisical;
 
 public static class ConfigurationBuilderExtensions
-{
-
+{ 
     /// <summary>
     /// Adds an <see cref="IConfigurationProvider"/> that reads configuration values from Infisical
     /// </summary>
@@ -14,7 +13,7 @@ public static class ConfigurationBuilderExtensions
     /// <param name="projectId"></param>
     /// <param name="environment"></param>
     /// <param name="reloadAfter"></param>
-    /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
+    /// <returns>The <see cref="IConfigurationBuilder"/></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static IConfigurationBuilder AddInfisical(this IConfigurationBuilder builder, string clientId, string clientSecret, string projectId, string environment, TimeSpan? reloadAfter = null)
     {
@@ -35,7 +34,7 @@ public static class ConfigurationBuilderExtensions
     /// <param name="environment"></param>
     /// <param name="optional"></param> 
     /// <param name="reloadAfter"></param>
-    /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
+    /// <returns>The <see cref="IConfigurationBuilder"/></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static IConfigurationBuilder AddInfisical(this IConfigurationBuilder builder, string clientId, string clientSecret, string projectId, bool optional, string environment, TimeSpan? reloadAfter = null)
     {
@@ -51,7 +50,7 @@ public static class ConfigurationBuilderExtensions
     /// </summary>
     /// <param name="builder"></param>
     /// <param name="infisicalOptions"></param>
-    /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
+    /// <returns>The <see cref="IConfigurationBuilder"/></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static IConfigurationBuilder AddInfisical(this IConfigurationBuilder builder, InfisicalOptions infisicalOptions)
     {
@@ -65,7 +64,7 @@ public static class ConfigurationBuilderExtensions
     /// <param name="builder"></param>
     /// <param name="infisicalOptions"></param>
     /// <param name="optional"></param>
-    /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
+    /// <returns>The <see cref="IConfigurationBuilder"/></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static IConfigurationBuilder AddInfisical(this IConfigurationBuilder builder, InfisicalOptions infisicalOptions, bool optional)
     {
@@ -79,7 +78,7 @@ public static class ConfigurationBuilderExtensions
     /// <param name="builder"></param>
     /// <param name="infisicalOptions"></param>
     /// <param name="reloadAfter"></param>
-    /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
+    /// <returns>The <see cref="IConfigurationBuilder"/></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static IConfigurationBuilder AddInfisical(this IConfigurationBuilder builder, InfisicalOptions infisicalOptions, TimeSpan reloadAfter)
     {
@@ -95,7 +94,7 @@ public static class ConfigurationBuilderExtensions
     /// <param name="infisicalOptions"></param>
     /// <param name="optional"></param>
     /// <param name="reloadAfter"></param>
-    /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
+    /// <returns>The <see cref="IConfigurationBuilder"/></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static IConfigurationBuilder AddInfisical(this IConfigurationBuilder builder, InfisicalOptions infisicalOptions, bool optional, TimeSpan reloadAfter)
     {
@@ -103,31 +102,62 @@ public static class ConfigurationBuilderExtensions
         return builder.AddInfisical(ConfigureSource(infisicalOptions, optional, reloadAfter));
     }
 
+
+
+
+
     /// <summary>
     /// Adds an <see cref="IConfigurationProvider"/> that reads configuration values from Infisical
     /// </summary>
     /// <param name="builder"></param>
     /// <param name="configureSource"></param>
-    /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
+    /// <returns>The <see cref="IConfigurationBuilder"/></returns>
     /// <exception cref="ArgumentNullException"></exception>
     public static IConfigurationBuilder AddInfisical(this IConfigurationBuilder builder, Action<InfisicalConfigurationSource> configureSource)
     {
         if (configureSource == null) throw new ArgumentNullException(nameof(configureSource));
-
         var source = new InfisicalConfigurationSource();
         configureSource(source);
-
-        ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.Environment, "InfisicalOptions.Environment");
-        ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.ClientId, "InfisicalOptions.ClientId");
-        ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.ClientSecret, "InfisicalOptions.ClientSecret");
-        ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.SiteUrl, "InfisicalOptions.SiteUrl");
-        ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.ProjectId, "InfisicalOptions.ProjectId");
-        
         return builder.Add(source);
     }
 
+    ///// <summary>
+    ///// Adds an <see cref="IConfigurationProvider"/> that reads configuration values from Infisical
+    ///// </summary>
+    ///// <param name="builder"></param>
+    ///// <param name="configureSource"></param>
+    ///// <param name="optional"></param>
+    ///// <param name="reloadAfter"></param>
+    ///// <returns></returns>
+    ///// <exception cref="ArgumentNullException"></exception>
+    //public static IConfigurationBuilder AddInfisical(this IConfigurationBuilder builder, Action<InfisicalConfigurationSource> configureSource, bool optional, TimeSpan? reloadAfter = null)
+    //{
+    //    if (configureSource == null) throw new ArgumentNullException(nameof(configureSource));
+    //    var config = builder.Build();
+    //    var source = new InfisicalConfigurationSource();
+    //    configureSource(source);
+    //    source.Optional = optional;
+    //    source.ReloadAfter = reloadAfter;
+    //    source.Update(config);
+    //    return builder.Add(source);
+    //}
+
+    //private static void UpdateOptionsFromConnectionString(IConfigurationBuilder builder, )
+    //{
+    //}
+
+    //private static void ConfigureOptionsFromConnectionString(IConfigurationBuilder builder, InfisicalConfigurationSource configurationSource, Func<IConfiguration, InfisicalOptions?> func)
+    //{
+    //    var opts = func(builder.Build());
+    //    configurationSource.InfisicalOptions.SiteUrl = opts?.SiteUrl ?? configurationSource.InfisicalOptions.SiteUrl;
+    //    configurationSource.InfisicalOptions.ClientId = opts?.ClientId ?? configurationSource.InfisicalOptions.ClientId;
+    //    configurationSource.InfisicalOptions.ClientSecret = opts?.ClientSecret ?? configurationSource.InfisicalOptions.ClientSecret;
+    //    configurationSource.InfisicalOptions.Environment = opts?.ProjectId ?? configurationSource.InfisicalOptions.Environment;
+    //    configurationSource.InfisicalOptions.ProjectId = opts?.ProjectId ?? configurationSource.InfisicalOptions.ProjectId;
+    //}
+
     private static Action<InfisicalConfigurationSource> ConfigureSource(InfisicalOptions infisicalOptions, bool optional = false, TimeSpan? reloadAfter = null)
-    {
+    {        
         return configurationSource =>
         {
             configurationSource.InfisicalOptions = infisicalOptions ?? new InfisicalOptions();
@@ -135,5 +165,9 @@ public static class ConfigurationBuilderExtensions
             configurationSource.ReloadAfter = reloadAfter;
         };
     }
+
+    
+
+  
 
 }
