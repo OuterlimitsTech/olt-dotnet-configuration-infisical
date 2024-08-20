@@ -4,36 +4,7 @@ using System.Data.Common;
 namespace OLT.Extensions.Configuration.Infisical;
 
 public static class ConfigurationExtensions
-{
-
-    /// <summary>
-    /// Builds <seealso cref="InfisicalOptions"/> from a connection string
-    /// </summary>
-    /// <remarks>
-    /// <list type="table">
-    ///     <item>
-    ///     <term>ConnectionStrings:Infisical</term>
-    ///     <description>Endpoint=https://app.infisical.com;ClientId=e2bcf5b2-0000-0000-0000-000000009876;Secret=**ClientSecret**;ProjectId=47c230b4-0000-0000-0000-000000001234;Environment=staging</description>
-    ///     </item>
-    /// </list>
-    /// </remarks>
-    /// <param name="configuration"></param>
-    /// <param name="path"></param>
-    /// <param name="recursive"></param>
-    /// <param name="configKey"></param>
-    /// <returns><seealso cref="InfisicalOptions"/></returns>
-    /// <exception cref="ArgumentNullException"></exception>    
-    internal static InfisicalOptions? BuildFromConfigKey(this IConfiguration configuration, string configKey, string path, bool recursive)
-    {
-        var connectionString =
-                configuration.GetConnectionString(configKey) ??
-                configuration.GetValue<string>(configKey) ??
-                Environment.GetEnvironmentVariable(configKey) ??
-                throw new Exception($"Invalid Configuration Key {configKey}");
-
-        return BuildInfisicalOptions(configuration, connectionString, path, recursive);
-    }
-
+{  
     /// <summary>
     /// Builds <seealso cref="InfisicalOptions"/> from a connection string
     /// </summary>
@@ -51,12 +22,9 @@ public static class ConfigurationExtensions
     /// <param name="recursive"></param>
     /// <returns><seealso cref="InfisicalOptions"/></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public static InfisicalOptions? BuildInfisicalOptions(this IConfiguration configuration, string? connectionString, string path, bool recursive)
+    public static InfisicalOptions ParseInfisicalConnectionString(this IConfiguration configuration, string connectionString, string path, bool recursive)
     {
-        if (string.IsNullOrEmpty(connectionString))
-        {
-            return null;
-        }
+        ArgumentNullException.ThrowIfNullOrEmpty(connectionString);
 
         DbConnectionStringBuilder connectionStringBuilder = new DbConnectionStringBuilder
         {
@@ -74,4 +42,9 @@ public static class ConfigurationExtensions
             SiteUrl = siteUrl,
         };
     }
+
+
+    
+
+
 }
