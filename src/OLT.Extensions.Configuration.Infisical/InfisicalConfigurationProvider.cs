@@ -1,5 +1,4 @@
 ﻿using Infisical.Sdk;
-using Microsoft.Extensions.Logging;
 using System.Collections.Frozen;
 using System.Diagnostics;
 
@@ -9,7 +8,6 @@ namespace OLT.Extensions.Configuration.Infisical;
 public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration.ConfigurationProvider, IDisposable
 {
     private readonly Lazy<InfisicalClient> _infisicalClient;
-    private readonly InfisicalConfigurationSource _source;
     private readonly Timer? _refreshTimer;
 
 
@@ -20,7 +18,7 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
 
     public InfisicalConfigurationProvider(InfisicalConfigurationSource source)
     {
-        _source = source ?? throw new ArgumentNullException(nameof(source));
+        Source = source ?? throw new ArgumentNullException(nameof(source));
 
         ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.SiteUrl, "InfisicalOptions.SiteUrl");
         ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.ClientId, "InfisicalOptions.ClientId");
@@ -53,6 +51,7 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
 
     }
 
+    public virtual InfisicalConfigurationSource Source { get; }
 
     public override void Load()
     {
@@ -68,7 +67,7 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
             if (delay.Ticks > 0L)
                 Task.Delay(delay).ConfigureAwait(false).GetAwaiter().GetResult();
 
-            if (!_source.Optional)
+            if (!Source.Optional)
                 throw;
         }
         finally
@@ -99,7 +98,7 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
     private void Load(Action<IDictionary<string, SecretElement>> callback)
     {
         var task = Task.Run(() => callback(LoadSecrets()));
-        if (!task.Wait(_source.Timeout))
+        if (!task.Wait(Source.Timeout))
             throw new Exception("Timeout while loading secrets.");
     }
 
@@ -107,10 +106,10 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
     {
         var request = new ListSecretsOptions
         {
-            Environment = _source.InfisicalOptions.Environment,
-            ProjectId = _source.InfisicalOptions.ProjectId,
-            Path = _source.InfisicalOptions.Path,
-            Recursive = _source.InfisicalOptions.Recursive
+            Environment = Source.InfisicalOptions.Environment,
+            ProjectId = Source.InfisicalOptions.ProjectId,
+            Path = Source.InfisicalOptions.Path,
+            Recursive = Source.InfisicalOptions.Recursive
         };
 
         return _infisicalClient.Value.ListSecrets(request).ToFrozenDictionary(s => s.SecretKey);
@@ -131,7 +130,7 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
         }
         catch
         {
-            if (!_source.Optional)
+            if (!Source.Optional)
             {
                 throw;
             }                
@@ -154,5 +153,13 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
 
         _infisicalClient.Value.Dispose();
     }
+
+    /// <summary>
+    /// Generates a string representing this provider name and relevant details.
+    /// </summary>
+    /// <returns>The configuration name.</returns>
+    public override string ToString()
+        => $"{GetType().Name} for '{Source.InfisicalOptions.SiteUrl} -> path: {Source.InfisicalOptions.Path} -> env: {Source.InfisicalOptions.Environment}' ({(Source.Optional ? "Optional" : "Required")})";
+
 
 }
