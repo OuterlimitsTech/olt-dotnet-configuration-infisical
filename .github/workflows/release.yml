@@ -26,16 +26,18 @@ jobs:
 
       - name: Get Version
         id: get_version
-        uses: JanneMattila/get-version-from-tag@v4
+        uses: tj-actions/branch-names@v8
+        with: 
+          strip_tag_prefix: ''
 
       - name: Restore dependencies
         run: dotnet restore ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }}
 
       - name: Build
-        run: dotnet build ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --configuration Release -p:Version=${{ steps.get_version.outputs.version }} --no-restore
+        run: dotnet build ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --configuration Release -p:Version=${{ steps.get_version.outputs.tag }} --no-restore
 
       - name: "Pack project"
-        run: dotnet pack ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.get_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+        run: dotnet pack ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.get_version.outputs.tag }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
       - name: "Push package"
         run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/**/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }}
