@@ -1,21 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 		<Description>Configuration provider for the .NET Core that allows developers to use Infisical as a configuration source in their applications</Description>
 		<ProjectGuid>c352e56e-8ad4-4f63-a548-df41979f5ad2</ProjectGuid>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Infisical.Sdk" Version="2.3.*" />
+	<ItemGroup>
+		<PackageReference Include="Infisical.Sdk" Version="2.3.*" />
+		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+	</ItemGroup>
+	
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.*" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.*" />
     <PackageReference Include="System.Text.Json" Version="8.0.*" />
-		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.*" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.*" />
+		<PackageReference Include="System.Text.Json" Version="9.0.*" />
+	</ItemGroup>
+	
 	
 </Project>
