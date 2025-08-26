@@ -12,6 +12,13 @@ A .NET API wrapper for Infisical's secrets management endpoints. This library pr
 dotnet add package OLT.Infisical.API.Wrapper
 ```
 
+### Overview
+
+- Fully async API using `Task`
+- Designed for .NET 8 and .NET 9
+- Uses [Refit](https://github.com/reactiveui/refit) for declarative REST API calls
+
+- 
 #### Add the Infisical HTTP Client to your service collection:
 
 ```csharp
@@ -34,9 +41,7 @@ services.AddInfisicalHttpClient(opts =>
 - Bulk operations for secrets (create, update, delete)
 - Attach and detach tags to secrets
 - Query secrets with advanced filtering
-- Fully async API using `Task`
-- Designed for .NET 8 and .NET 9
-- Uses [Refit](https://github.com/reactiveui/refit) for declarative REST API calls
+
 
 ### Usage
 
@@ -68,6 +73,10 @@ services.AddInfisicalHttpClient(opts =>
 
 
 ## Folders
+
+- Create, update, delete, and retrieve folders
+- Query folders with advanced filtering
+
 
 ### Usage 
 

@@ -9,7 +9,18 @@
 MIT
 
 
+### Documentation
 
+- [Infisical API Reference](https://infisical.com/docs/api-reference/overview/introduction)
+
+### Contributing
+
+Pull requests and issues are welcome.
+
+#### Package Documentation
+
+- [OLT.Extensions.Configuration.Infisical](/src/OLT.Extensions.Configuration.Infisical)
+- [OLT.Infisical.API.Wrapper](/src/OLT.Infisical.API.Wrapper)
 
 
 
