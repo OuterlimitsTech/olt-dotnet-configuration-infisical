@@ -12,6 +12,20 @@ A .NET API wrapper for Infisical's secrets management endpoints. This library pr
 dotnet add package OLT.Infisical.API.Wrapper
 ```
 
+#### Add the Infisical HTTP Client to your service collection:
+
+```csharp
+using OLT.Infisical.API.Wrapper;
+
+
+services.AddInfisicalHttpClient(opts =>
+{
+    // opts.SiteUrl = "https://infisical.mydomain.com";  <-- Custom URL if needed (default is https://us.infisical.com)
+    opts.ClientId = "00000000-0000-0000-0000-000000000000";
+    opts.ClientSecret = "client secret here";
+});
+
+```
 
 
 ## Secrets
@@ -52,57 +66,24 @@ dotnet add package OLT.Infisical.API.Wrapper
 | AttachTags    | POST   | /api/v3/secrets/tags/{secretName}   | Attach tags to a secret    |
 | DetachTags    | DELETE | /api/v3/secrets/tags/{secretName}   | Detach tags from a secret  |
 
-### Documentation
-
-- [Infisical API Reference](https://infisical.com/docs/api-reference/overview/introduction)
-
-### Contributing
-
-Pull requests and issues are welcome.
-
-
-#### Add the Infisical HTTP Client to your service collection:
-
-```csharp
-using OLT.Infisical.API.Wrapper;
-
-
-services.AddInfisicalHttpClient(opts =>
-{
-    // opts.SiteUrl = "https://infisical.mydomain.com";  <-- Custom URL if needed (default is https://us.infisical.com)
-    opts.ClientId = "00000000-0000-0000-0000-000000000000";
-    opts.ClientSecret = "client secret here";
-});
-
-```
-
-### Get Secrets
-```csharp
-using OLT.Infisical.API.Wrapper;
-
-
-services.AddInfisicalHttpClient(opts =>
-{
-    // opts.SiteUrl = "https://infisical.mydomain.com";  <-- Custom URL if needed (default is https://us.infisical.com)
-    opts.ClientId = "00000000-0000-0000-0000-000000000000";
-    opts.ClientSecret = "client secret here";
-});
-
-```
 
 ## Folders
 
-## Supported Endpoints
+### Usage 
 
-- **Create Folder**: `POST /api/v3/folders`
-- **Update Folder**: `PATCH /api/v3/folders/{folderName}`
-- **Delete Folder**: `DELETE /api/v3/folders/{folderName}`
-- **Get Folder by ID**: `GET /api/v3/folders/{id}`
-- **List Folders**: `GET /api/v3/folders`
+- `CreateFolder` - Create a new folder
+- `UpdateFolder` - Update a folder
+- `DeleteFolder` - Delete a folder
+- `GetFolder` - Get folder by id
+- `ListFolders` - List all folders
 
-## Usage
 
-1. **Install Refit**  
-   Add the [Refit](https://github.com/reactiveui/refit) NuGet package to your project.
+### API Endpoints
 
-2. **Define the API Client**
+| Method         | Verb   | Endpoint                     | Description            |
+|----------------|--------|------------------------------|------------------------|
+| CreateFolder   | POST   | /api/v3/folders              | Create a folder        |
+| UpdateFolder   | PATCH  | /api/v3/folders/{folderName} | Update a folder        |
+| DeleteFolder   | DELETE | /api/v3/folders/{folderName} | Delete a folder        |
+| GetFolderByID  | GET    | /api/v3/folders/{id}         | Get folder by ID       |
+| ListFolders    | GET    | /api/v3/folders              | List folders           |
