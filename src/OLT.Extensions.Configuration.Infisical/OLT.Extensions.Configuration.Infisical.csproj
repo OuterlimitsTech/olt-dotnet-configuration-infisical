@@ -9,7 +9,8 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Infisical.Sdk" Version="2.3.*" />
+		<!--<PackageReference Include="Infisical.Sdk" Version="2.3.*" />-->
+		<PackageReference Include="Infisical.Sdk" Version="3.0.*" />
 		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
 	</ItemGroup>
 	

@@ -18,7 +18,7 @@ dotnet add package OLT.Infisical.API.Wrapper
 - Designed for .NET 8 and .NET 9
 - Uses [Refit](https://github.com/reactiveui/refit) for declarative REST API calls
 
-- 
+ 
 #### Add the Infisical HTTP Client to your service collection:
 
 ```csharp

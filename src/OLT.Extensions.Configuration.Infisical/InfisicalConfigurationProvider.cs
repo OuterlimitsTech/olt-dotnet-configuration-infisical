@@ -1,17 +1,14 @@
 ﻿using Infisical.Sdk;
-using System.Collections.Frozen;
-using System.Diagnostics;
+using Infisical.Sdk.Model;
 
 namespace OLT.Extensions.Configuration.Infisical;
 
 
 public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration.ConfigurationProvider, IDisposable
 {
-    private readonly Lazy<InfisicalClient> _infisicalClient;
     private readonly Timer? _refreshTimer;
+    private readonly Lazy<InfisicalClient> _infisicalClient;
 
-
-    private static readonly TimeSpan MinDelayForUnhandledFailure = TimeSpan.FromSeconds(5);
     private bool _isInitialLoadComplete;
     private int _networkOperationsInProgress;
     
@@ -26,22 +23,14 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
         ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.Environment, "InfisicalOptions.Environment");
         ArgumentNullException.ThrowIfNullOrEmpty(source.InfisicalOptions.ProjectId, "InfisicalOptions.ProjectId");
 
+        var settings = new InfisicalSdkSettingsBuilder()
+                     .WithHostUri(Source.InfisicalOptions.SiteUrl)
+                     .Build();
+
         _infisicalClient = new Lazy<InfisicalClient>(() =>
         {
-            ClientSettings settings = new ClientSettings
-            {
-                SiteUrl = source.InfisicalOptions.SiteUrl,                
-                Auth = new AuthenticationOptions
-                {
-                    UniversalAuth = new UniversalAuthMethod
-                    {
-                        ClientId = source.InfisicalOptions.ClientId,
-                        ClientSecret = source.InfisicalOptions.ClientSecret
-                    }                    
-                }                
-            };
-
-            return new InfisicalClient(settings);
+            var infisicalClient = new InfisicalClient(settings);
+            return infisicalClient;
         });
 
         if (source.ReloadAfter != null)
@@ -55,65 +44,61 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
 
     public override void Load()
     {
-
-        var stopwatch = Stopwatch.StartNew();
         try
         {
-            Load(false);            
+            LoadAsync(false).ConfigureAwait(false).GetAwaiter().GetResult();
         }
-        catch  
+        catch
         {
-            var delay = MinDelayForUnhandledFailure.Subtract(stopwatch.Elapsed);
-            if (delay.Ticks > 0L)
-                Task.Delay(delay).ConfigureAwait(false).GetAwaiter().GetResult();
-
-            if (!Source.Optional)
-                throw;
+            throw;
         }
         finally
         {
-            this._isInitialLoadComplete = true;
+            _isInitialLoadComplete = true;
         }
     }
 
-    private void Load(bool reload)
+    private async Task LoadAsync(bool reload)
     {
-        Load(secrets =>
-        {
-            var data = new Dictionary<string, string>();
-            foreach (var (key, value) in secrets)
+
+        try
+        {            
+            _ = await _infisicalClient.Value.Auth().UniversalAuth().LoginAsync(Source.InfisicalOptions.ClientId, Source.InfisicalOptions.ClientSecret).ConfigureAwait(false);
+
+
+            var request = new ListSecretsOptions
             {
-                data.Add(key, value.SecretValue);
-            }
-            Data = data!;
+                SetSecretsAsEnvironmentVariables = false,
+                EnvironmentSlug = Source.InfisicalOptions.Environment,
+                ProjectId = Source.InfisicalOptions.ProjectId,
+                SecretPath = Source.InfisicalOptions.Path,
+                Recursive = Source.InfisicalOptions.Recursive
+            };
 
-            if (reload)
+            var secrets = await _infisicalClient.Value.Secrets().ListAsync(request).ConfigureAwait(false);
+            var newData = secrets.ToDictionary(s => s.SecretKey, s => s.SecretValue);
+            
+            if (Data != null && !Data!.EquivalentTo(newData))
             {
-                OnReload();
+                Data = newData!;
+
+                if (reload)
+                {
+                    OnReload();
+                }
             }
-        });
-    }
 
-
-    private void Load(Action<IDictionary<string, SecretElement>> callback)
-    {
-        var task = Task.Run(() => callback(LoadSecrets()));
-        if (!task.Wait(Source.Timeout))
-            throw new Exception("Timeout while loading secrets.");
-    }
-
-    private FrozenDictionary<string, SecretElement> LoadSecrets()
-    {
-        var request = new ListSecretsOptions
+        }
+        catch
         {
-            Environment = Source.InfisicalOptions.Environment,
-            ProjectId = Source.InfisicalOptions.ProjectId,
-            Path = Source.InfisicalOptions.Path,
-            Recursive = Source.InfisicalOptions.Recursive
-        };
+            if (Source.Optional) return;
 
-        return _infisicalClient.Value.ListSecrets(request).ToFrozenDictionary(s => s.SecretKey);
+            if (!reload) throw;
+        }
+
+
     }
+
 
     private void OnTimerElapsed(object? state)
     {
@@ -126,14 +111,11 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
 
         try
         {
-            Load(true);
+            LoadAsync(true).ConfigureAwait(false).GetAwaiter().GetResult();
         }
         catch
         {
-            if (!Source.Optional)
-            {
-                throw;
-            }                
+            throw;
         }
         finally
         {
@@ -151,7 +133,8 @@ public class InfisicalConfigurationProvider : Microsoft.Extensions.Configuration
         if (!_infisicalClient.IsValueCreated)
             return;
 
-        _infisicalClient.Value.Dispose();
+        //_infisicalClient.Value.Dispose();
+
     }
 
     /// <summary>
