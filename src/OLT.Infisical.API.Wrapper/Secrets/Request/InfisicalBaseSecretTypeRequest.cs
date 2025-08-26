@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Refit;
+using System.Text.Json.Serialization;
 
 namespace OLT.Infisical.API.Wrapper.Secrets.Request;
 
@@ -15,6 +16,7 @@ public abstract class InfisicalBaseSecretTypeRequest : InfisicalBaseSecretPathRe
     /// default: shared
     /// </remarks>
     [JsonPropertyName("type")]
+    [AliasAs("type")]
     public string Type { get; init; } = "shared";
 }
 

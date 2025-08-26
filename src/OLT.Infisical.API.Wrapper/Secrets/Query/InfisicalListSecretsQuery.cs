@@ -1,10 +1,18 @@
-﻿using OLT.Infisical.API.Wrapper.Secrets.Request;
-using System.Text.Json.Serialization;
+﻿using Refit;
 
 namespace OLT.Infisical.API.Wrapper.Secrets.Query;
 
-public sealed class InfisicalListSecretsQuery : InfisicalBaseSecretTypeRequest
+//NOTE: This class can not be inherited 
+public class InfisicalListSecretsQuery
 {
+    [AliasAs("workspaceId")]
+    public required virtual string WorkspaceId { get; init; }
+
+    [AliasAs("environment")]
+    public required string Environment { get; init; }
+
+    [AliasAs("secretPath")]
+    public required string SecretPath { get; init; } = LibConstants.RootPath;
 
     /// <summary>
     /// The secret metadata key-value pairs to filter secrets by. When querying for multiple metadata pairs, the query is treated as an AND operation. 
@@ -12,29 +20,28 @@ public sealed class InfisicalListSecretsQuery : InfisicalBaseSecretTypeRequest
     /// <remarks>
     /// Secret metadata format is: key=value1,value=value2|key=value3,value=value4.
     /// </remarks>
-    [JsonPropertyName("metadataFilter")]
-    public string? MetadataFilter { get; init; }    
-    
+    [AliasAs("metadataFilter")]
+    public string? MetadataFilter { get; init; }
 
-    [JsonPropertyName("recursive")]
+    [AliasAs("recursive")]
     public bool Recursive { get; init; } = false;
 
     /// <summary>
     /// Comma-separated list of tag slugs to filter by
     /// </summary>
-    [JsonPropertyName("tagSlugs")]
+    [AliasAs("tagSlugs")]
     public string? TagSlugs { get; init; }
 
-    [JsonPropertyName("version")]
+    [AliasAs("version")]
     public int? Version { get; init; }
 
-    [JsonPropertyName("viewSecretValue")]
+    [AliasAs("viewSecretValue")]
     public bool ViewSecretValue { get; init; } = true;
 
-    [JsonPropertyName("expandSecretReferences")]
+    [AliasAs("expandSecretReferences")]
     public bool ExpandSecretReferences { get; init; } = false;
 
-    [JsonPropertyName("includeImports")]
+    [AliasAs("includeImports")]
     public bool IncludeImports { get; init; } = false;
 
 }

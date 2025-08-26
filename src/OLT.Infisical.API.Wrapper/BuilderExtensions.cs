@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using OLT.Infisical.API.Wrapper.Auth;
 using Polly;
 using Refit;
+using System.Text.Json;
 
 namespace OLT.Infisical.API.Wrapper;
 
@@ -14,8 +15,18 @@ public static class BuilderExtensions
         services.Configure<InfisicalApiOptions>(options => action(options));
         services.AddSingleton<IInfisicalTokenService, InfisicalTokenService>();
 
+        var settings = new RefitSettings
+        {
+            UrlParameterFormatter = new InfisicalCustomUrlParameterFormatter(),
+            ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            })
+        };
+
+
         services
-            .AddRefitClient<IInfisicalApiUniversalAuth>()
+            .AddRefitClient<IInfisicalApiUniversalAuth>(settings)
             .ConfigureHttpClient((services, client) =>
             {
                 var opts = services.GetRequiredService<IOptions<InfisicalApiOptions>>().Value;
@@ -25,7 +36,7 @@ public static class BuilderExtensions
             .AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
 
         services
-            .AddRefitClient<IInfisicalApiSecrets>()
+            .AddRefitClient<IInfisicalApiSecrets>(settings)
             .ConfigureHttpClient((services, client) =>
             {
                 var opts = services.GetRequiredService<IOptions<InfisicalApiOptions>>().Value;
@@ -36,7 +47,7 @@ public static class BuilderExtensions
             .AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
 
         services
-            .AddRefitClient<IInfisicalApiFolders>()
+            .AddRefitClient<IInfisicalApiFolders>(settings)
             .ConfigureHttpClient((services, client) =>
             {
                 var opts = services.GetRequiredService<IOptions<InfisicalApiOptions>>().Value;

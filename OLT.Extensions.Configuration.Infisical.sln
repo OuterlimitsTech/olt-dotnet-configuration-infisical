@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{1C3FD0
 		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.Infisical.API.Wrapper", "src\OLT.Infisical.API.Wrapper\OLT.Infisical.API.Wrapper.csproj", "{FC36A1FD-1683-48EC-A3E9-F6BE9357FCD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{3214F245-4E46-496B-A531-C5254B29AC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3214F245-4E46-496B-A531-C5254B29AC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3214F245-4E46-496B-A531-C5254B29AC01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC36A1FD-1683-48EC-A3E9-F6BE9357FCD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC36A1FD-1683-48EC-A3E9-F6BE9357FCD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC36A1FD-1683-48EC-A3E9-F6BE9357FCD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC36A1FD-1683-48EC-A3E9-F6BE9357FCD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3E404E6B-768E-4C80-96EC-F7811CF1D765} = {32812D02-C60F-4F2E-8980-84B45BF62EA8}
 		{3214F245-4E46-496B-A531-C5254B29AC01} = {94E97D3A-7548-4EBE-B245-2CAE63E0149C}
+		{FC36A1FD-1683-48EC-A3E9-F6BE9357FCD2} = {32812D02-C60F-4F2E-8980-84B45BF62EA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43EFE665-3F36-4E3C-A407-D3482A2D25D6}

@@ -2,6 +2,7 @@
 using OLT.Infisical.API.Wrapper.Secrets.Request;
 using OLT.Infisical.API.Wrapper.Secrets.Response;
 using Refit;
+using System.Reflection;
 
 namespace OLT.Infisical.API.Wrapper;
 

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Refit;
+using System.Text.Json.Serialization;
 
 namespace OLT.Infisical.API.Wrapper.Secrets.Request;
 
@@ -8,15 +9,18 @@ namespace OLT.Infisical.API.Wrapper.Secrets.Request;
 public abstract class InfisicalBaseSecretRequest
 {
     [JsonPropertyName("workspaceId")]
-    public string? WorkspaceId { get; init; }
+    [AliasAs("workspaceId")]
+    public virtual string? WorkspaceId { get; init; }
 
     [JsonPropertyName("workspaceSlug")]
+    [AliasAs("workspaceSlug")]
     public virtual string? WorkspaceSlug { get; init; }
 
     /// <summary>
     /// examples: dev, prod, staging
     /// </summary>
     [JsonPropertyName("environment")]
+    [AliasAs("environment")]
     public required string Environment { get; init; }
 
 }
