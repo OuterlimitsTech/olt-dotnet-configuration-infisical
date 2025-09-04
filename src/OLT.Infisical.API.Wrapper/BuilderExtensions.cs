@@ -4,6 +4,7 @@ using OLT.Infisical.API.Wrapper.Auth;
 using Polly;
 using Refit;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace OLT.Infisical.API.Wrapper;
 
@@ -20,6 +21,7 @@ public static class BuilderExtensions
             UrlParameterFormatter = new InfisicalCustomUrlParameterFormatter(),
             ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions
             {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             })
         };
@@ -32,8 +34,8 @@ public static class BuilderExtensions
                 var opts = services.GetRequiredService<IOptions<InfisicalApiOptions>>().Value;
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.BaseAddress = new Uri(opts.SiteUrl);
-            })
-            .AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
+            });
+            //.AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
 
         services
             .AddRefitClient<IInfisicalApiSecrets>(settings)
@@ -43,8 +45,8 @@ public static class BuilderExtensions
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.BaseAddress = new Uri(opts.SiteUrl);
             })
-            .AddHttpMessageHandler(services => new InfisicalBearerTokenHandler(services.GetRequiredService<IInfisicalTokenService>()))
-            .AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
+            .AddHttpMessageHandler(services => new InfisicalBearerTokenHandler(services.GetRequiredService<IInfisicalTokenService>()));
+        //.AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
 
         services
             .AddRefitClient<IInfisicalApiFolders>(settings)
@@ -54,8 +56,8 @@ public static class BuilderExtensions
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.BaseAddress = new Uri(opts.SiteUrl);
             })
-            .AddHttpMessageHandler(services => new InfisicalBearerTokenHandler(services.GetRequiredService<IInfisicalTokenService>()))
-            .AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
+            .AddHttpMessageHandler(services => new InfisicalBearerTokenHandler(services.GetRequiredService<IInfisicalTokenService>()));
+            //.AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
 
         return services;
     }

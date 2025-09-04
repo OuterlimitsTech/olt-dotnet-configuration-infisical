@@ -2,16 +2,15 @@
 
 namespace OLT.Infisical.API.Wrapper.Secrets.Request;
 
-public sealed class InfisicalUpdateSecretRequest : InfisicalBaseSecretTypeRequest
+public class InfisicalUpdateSecretRequest : InfisicalCreateSecretRequest
 {
-    [JsonPropertyName("projectSlug")]
-    public override string? WorkspaceSlug { get; init; }
 
     [JsonPropertyName("secretReminderRecipients")]
-    public IReadOnlyList<string> SecretReminderRecipients { get; init; } = new  List<string>();
+    public IReadOnlyList<string> SecretReminderRecipients { get; init; } = new List<string>();
 
     [JsonPropertyName("newSecretName")]
-    public required string NewSecretName { get; init; }
-    
+    public string? NewSecretName { get; init; } = null;
+
+
 }
 

@@ -13,7 +13,7 @@ public interface IInfisicalApiFolders
     /// <remarks>
     /// <a href="https://infisical.com/docs/api-reference/endpoints/folders/create">Documentation</a>
     /// </remarks>
-    [Post("/api/v3/folders")]
+    [Post("/api/v1/folders")]
     Task<InfisicalSingleFolderResponse> CreateFolder([Body] InfiscalCreateFolderRequest request, CancellationToken ct = default);
 
     /// <summary>
@@ -22,7 +22,7 @@ public interface IInfisicalApiFolders
     /// <remarks>
     /// <a href="https://infisical.com/docs/api-reference/endpoints/folders/update">Documentation</a>
     /// </remarks>
-    [Patch("/api/v3/folders/{folderName}")]
+    [Patch("/api/v1/folders/{folderName}")]
     Task<InfisicalSingleFolderResponse> UpdateFolder(string folderName, [Body] InfisicalUpdateFolderRequest request, CancellationToken ct = default);
 
     /// <summary>
@@ -31,7 +31,7 @@ public interface IInfisicalApiFolders
     /// <remarks>
     /// <a href="https://infisical.com/docs/api-reference/endpoints/folders/delete">Documentation</a>
     /// </remarks>
-    [Delete("/api/v3/folders/{folderName}")]
+    [Delete("/api/v1/folders/{folderName}")]
     Task<InfisicalSingleFolderResponse> DeleteFolder(string folderName, [Body] InfisicalDeleteFolderRequest request, CancellationToken ct = default);
 
     /// <summary>
@@ -40,7 +40,7 @@ public interface IInfisicalApiFolders
     /// <remarks>
     /// <a href="https://infisical.com/docs/api-reference/endpoints/folders/get-by-id">Documentation</a>
     /// </remarks>
-    [Get("/api/v3/folders/{id}")]
+    [Get("/api/v1/folders/{id}")]
     Task<InfisicalSingleFolderResponse> GetFolder(string id, CancellationToken ct = default);
 
     /// <summary>
@@ -49,7 +49,7 @@ public interface IInfisicalApiFolders
     /// <remarks>
     /// <a href="https://infisical.com/docs/api-reference/endpoints/folders/list">Documentation</a>
     /// </remarks>
-    [Get("/api/v3/folders")]
+    [Get("/api/v1/folders")]
     Task<InfisicalMultiFolderResponse> ListFolders([Query] InfisicalListFoldersQuery query, CancellationToken ct = default);
 }
 

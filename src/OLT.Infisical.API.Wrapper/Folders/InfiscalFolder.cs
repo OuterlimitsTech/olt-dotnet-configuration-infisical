@@ -1,9 +1,8 @@
-﻿using OLT.Infisical.API.Wrapper.Folders.Requests;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace OLT.Infisical.API.Wrapper.Folders;
 
-public sealed class InfiscalFolder
+public class InfiscalFolderList
 {
     [JsonPropertyName("id")]
     public string? Id { get; init; }
@@ -34,7 +33,4 @@ public sealed class InfiscalFolder
 
     [JsonPropertyName("lastSecretModified")]
     public DateTime? LastSecretModified { get; init; }
-
-    [JsonPropertyName("path")]
-    public string? Path { get; init; }
 }

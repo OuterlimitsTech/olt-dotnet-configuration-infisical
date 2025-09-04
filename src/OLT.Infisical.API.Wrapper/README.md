@@ -87,8 +87,8 @@ public class InfisicalSecretService : IInfisicalSecretService
         var query = new OLT.Infisical.API.Wrapper.Secrets.Query.InfisicalListSecretsQuery
         {
             WorkspaceId = "00000000-0000-0000-0000-000000001234",
-            SecretPath = "/MyPath",
             Environment = "prod",
+            SecretPath = "/MyPath",            
             Recursive = true,
             IncludeImports = true,
         };
@@ -104,12 +104,26 @@ public class InfisicalSecretService : IInfisicalSecretService
         }
     }
 
-    public async Task<string> CreateSecretAsync(string path, string secretKey, string secretValue, InfisicalEnvironmentTypes environment, CancellationToken cancellationToken, int size)
+    public async Task<string?> GetAsync(string path, string secretKey, CancellationToken cancellationToken = default)
+    {
+        var query = new OLT.Infisical.API.Wrapper.Secrets.Query.InfisicalGetSecretQuery
+        {
+            WorkspaceId = "00000000-0000-0000-0000-000000001234",
+            Environment = "prod",
+            SecretPath = path,            
+            IncludeImports = true,
+        };
+
+        var result = await _infiscialSecretsApi.RetrieveSecret(secretKey, query, cancellationToken);
+        return result.Secret?.SecretValue;
+    }
+
+    public async Task CreateSecretAsync(string path, string secretKey, string secretValue, CancellationToken cancellationToken)
     {
         var request = new OLT.Infisical.API.Wrapper.Secrets.Request.InfisicalCreateSecretRequest
         {
-            WorkspaceId = _infisicalConnectionString.ProjectId!,
-            Environment = environment.GetCodeEnum()!,
+            WorkspaceId = "00000000-0000-0000-0000-000000001234",
+            Environment = "prod",
             SecretPath = path,
             SecretValue = secretValue,
         };
@@ -117,6 +131,41 @@ public class InfisicalSecretService : IInfisicalSecretService
         var result = await _infiscialSecretsApi.CreateSecret(secretKey, request, cancellationToken);
 
         Console.Write(result.Secret?.Id);
+    }
+
+    public async Task UpdateSecretAsync(string path, string secretKey, string secretValue, InfisicalEnvironmentTypes environment, CancellationToken cancellationToken)
+    {
+        _ = await GetOrCreateFolderAsync(path, environment, cancellationToken);
+
+        var request = new OLT.Infisical.API.Wrapper.Secrets.Request.InfisicalUpdateSecretRequest
+        {
+            WorkspaceId = "00000000-0000-0000-0000-000000001234",
+            Environment = "prod",
+            SecretPath = path,
+            SecretValue = secretValue,
+        };
+
+        var result = await _infiscialSecretsApi.UpdateSecret(secretKey, request, cancellationToken);
+
+        Console.Write(result.Secret?.Id);
+    }
+
+    public async Task RenameSecretAsync(string path, string secretKey, string newSecretKey, InfisicalEnvironmentTypes environment, CancellationToken cancellationToken)
+    {
+        _ = await GetOrCreateFolderAsync(path, environment, cancellationToken);
+
+        var request = new OLT.Infisical.API.Wrapper.Secrets.Request.InfisicalUpdateSecretRequest
+        {
+            WorkspaceId = "00000000-0000-0000-0000-000000001234",
+            Environment = "prod",
+            SecretPath = path,
+            NewSecretName = newSecretKey,
+        };
+
+        var result = await _infiscialSecretsApi.UpdateSecret(secretKey, request, cancellationToken);
+
+        Console.Write(result.Secret?.Id);
+
     }
 }
 
