@@ -56,7 +56,7 @@ services.AddInfisicalHttpClient(opts =>
 - `AttachTags` - Attach tags to a secret
 - `DetachTags` - Detach tags from a secret
 
-## API Endpoints
+### API Endpoints
 
 | Method        | Verb   | Endpoint                            | Description                |
 |---------------|--------|-------------------------------------|----------------------------|
@@ -71,6 +71,56 @@ services.AddInfisicalHttpClient(opts =>
 | AttachTags    | POST   | /api/v3/secrets/tags/{secretName}   | Attach tags to a secret    |
 | DetachTags    | DELETE | /api/v3/secrets/tags/{secretName}   | Detach tags from a secret  |
 
+```csharp
+
+public class InfisicalSecretService : IInfisicalSecretService
+{
+    private readonly OLT.Infisical.API.Wrapper.IInfisicalApiSecrets _infiscialSecretsApi;
+
+    public InfisicalSecretService(OLT.Infisical.API.Wrapper.IInfisicalApiSecrets infiscialSecretsApi)
+    {
+        _infiscialSecretsApi = infiscialSecretsApi;
+    }
+
+    public async Task GetAllAsync(CancellationToken cancellationToken)
+    {
+        var query = new OLT.Infisical.API.Wrapper.Secrets.Query.InfisicalListSecretsQuery
+        {
+            WorkspaceId = "00000000-0000-0000-0000-000000001234",
+            SecretPath = "/MyPath",
+            Environment = "prod",
+            Recursive = true,
+            IncludeImports = true,
+        };
+
+        var queryResult = await _infiscialSecretsApi.ListSecrets(query, cancellationToken);
+
+        foreach (var secret in queryResult.Secrets)
+        {
+            //Do Stuff
+            Console.WriteLine(secret.SecretPath);
+            Console.WriteLine(secret.SecretKey);
+            Console.WriteLine(secret.SecretValue);
+        }
+    }
+
+    public async Task<string> CreateSecretAsync(string path, string secretKey, string secretValue, InfisicalEnvironmentTypes environment, CancellationToken cancellationToken, int size)
+    {
+        var request = new OLT.Infisical.API.Wrapper.Secrets.Request.InfisicalCreateSecretRequest
+        {
+            WorkspaceId = _infisicalConnectionString.ProjectId!,
+            Environment = environment.GetCodeEnum()!,
+            SecretPath = path,
+            SecretValue = secretValue,
+        };
+
+        var result = await _infiscialSecretsApi.CreateSecret(secretKey, request, cancellationToken);
+
+        Console.Write(result.Secret?.Id);
+    }
+}
+
+```
 
 ## Folders
 
@@ -96,3 +146,53 @@ services.AddInfisicalHttpClient(opts =>
 | DeleteFolder   | DELETE | /api/v3/folders/{folderName} | Delete a folder        |
 | GetFolderByID  | GET    | /api/v3/folders/{id}         | Get folder by ID       |
 | ListFolders    | GET    | /api/v3/folders              | List folders           |
+
+
+```csharp
+
+public class InfisicalFolderService : IInfisicalFolderService
+{
+    private readonly OLT.Infisical.API.Wrapper.IInfisicalApiFolders _infiscialFoldersApi;
+
+    public InfisicalSecretService(OLT.Infisical.API.Wrapper.IInfisicalApiFolders infiscialFoldersApi)
+    {
+        _infiscialFoldersApi = infiscialFoldersApi;
+    }
+
+    public async Task GetAllAsync(CancellationToken cancellationToken)
+    {
+        var query = new OLT.Infisical.API.Wrapper.Folders.Query.InfisicalListFoldersQuery
+        {
+            WorkspaceId = "00000000-0000-0000-0000-000000001234",
+            Path = "/MyPath",
+            Environment = "prod"
+        };
+
+        var queryResult = await _infiscialFoldersApi.ListFolders(query, cancellationToken);
+
+        foreach (var folder in result.Folders)
+        {
+            //Do Stuff
+            Console.WriteLine(folder.Id);
+            Console.WriteLine(folder.Name);
+        }
+    }
+
+    public async Task CreateAsync(CancellationToken cancellationToken)
+    {
+        var request = new OLT.Infisical.API.Wrapper.Folders.Requests.InfiscalCreateFolderRequest
+        {
+            WorkspaceId = "00000000-0000-0000-0000-000000001234",
+            Environment = "prod",
+            Path = "/MyPath",            
+            Name = "NewFolderName"
+        };
+
+        var createFolderResult = await _infiscialFoldersApi.CreateFolder(request, cancellationToken);
+
+        Console.WriteLine(createFolderResult.Folder.Id);
+        Console.WriteLine(createFolderResult.Folder.Name);
+    }
+}
+
+```

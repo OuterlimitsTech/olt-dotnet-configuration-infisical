@@ -2,7 +2,7 @@
 
 namespace OLT.Infisical.API.Wrapper.Secrets.Request;
 
-public sealed class InfisicalUpdateSecretRequest : InfisicalBaseSecretUpsertRequest
+public sealed class InfisicalUpdateSecretRequest : InfisicalBaseSecretTypeRequest
 {
     [JsonPropertyName("projectSlug")]
     public override string? WorkspaceSlug { get; init; }
