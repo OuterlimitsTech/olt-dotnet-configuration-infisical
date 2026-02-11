@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/.build/">
+    <File Path=".github/dependabot.yml" />
+    <File Path=".github/workflows/build.yml" />
+    <File Path=".github/workflows/release.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".config/dotnet-tools.json" />
+    <File Path="Directory.Build.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/OLT.Extensions.Configuration.Infisical/OLT.Extensions.Configuration.Infisical.csproj" />
+    <Project Path="src/OLT.Infisical.API.Wrapper/OLT.Infisical.API.Wrapper.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OLT.Extensions.Configuration.Infisical.Tests/OLT.Extensions.Configuration.Infisical.Tests.csproj" />
+  </Folder>
+</Solution>
