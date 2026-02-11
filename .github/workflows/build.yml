@@ -40,7 +40,7 @@ jobs:
 
       - name: Get branch name
         id: branch-name
-        uses: tj-actions/branch-names@v9.0.2
+        uses: tj-actions/branch-names@v9
 
       # # https://www.seeleycoder.com/blog/sonarqube-with-github-actions-and-net-core-5-x/
       # # this process reads the .config -> dotnet-tools.json to restore packages
