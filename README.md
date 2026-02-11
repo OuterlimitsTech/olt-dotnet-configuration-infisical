@@ -1,129 +1,29 @@
 # .NET Configuration Extensions for Infisical 
 
-### OLT.Extensions.Configuration.Infisical is a configuration provider for the .NET Core that allows developers to use [Infisical](https://infisical.com/) as a configuration source in their applications.
-
 [![Nuget](https://img.shields.io/nuget/v/OLT.Extensions.Configuration.Infisical)](https://www.nuget.org/packages/OLT.Extensions.Configuration.Infisical)
 
 [![CI](https://github.com/OuterlimitsTech/olt-dotnet-configuration-infisical/actions/workflows/build.yml/badge.svg)](https://github.com/OuterlimitsTech/olt-dotnet-configuration-infisical/actions/workflows/build.yml) 
 
-### Install the package:
+## License
 
-```shell
-dotnet add package OLT.Extensions.Configuration.Infisical
-```
-
-### Simple
-
-```csharp
-using OLT.Extensions.Configuration.Infisical;
-
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Configuration
-    .SetBasePath(builder.Environment.ContentRootPath)
-    .AddInfisical(options, "e2bcf5b2-0000-0000-0000-000000009876", "---ClientSecret---", "47c230b4-0000-0000-0000-000000001234", "prod", false, TimeSpan.FromMinutes(10));
-
-```
+MIT
 
 
-### Load all secrets and all subfolders
+### Documentation
 
-```csharp
-using OLT.Extensions.Configuration.Infisical;
+- [Infisical API Reference](https://infisical.com/docs/api-reference/overview/introduction)
 
-var options = new InfisicalOptions
-{
-    ClientId = "e2bcf5b2-0000-0000-0000-000000009876",
-    ClientSecret = "---ClientSecret---",
-    ProjectId = "47c230b4-0000-0000-0000-000000001234",
-    Environment = "dev",
-    Recursive = true
-};
+### Contributing
 
-var builder = WebApplication.CreateBuilder(args);
+Pull requests and issues are welcome.
 
-builder.Configuration
-    .SetBasePath(builder.Environment.ContentRootPath)
-    .AddInfisical(options, false, TimeSpan.FromMinutes(10));
+#### Package Documentation
 
-```
-
-### Using Paths
-
-```csharp
-using OLT.Extensions.Configuration.Infisical;
-
-var sharedOptions = new InfisicalOptions
-{
-    ClientId = "e2bcf5b2-0000-0000-0000-000000009876",
-    ClientSecret = "---ClientSecret---",
-    ProjectId = "47c230b4-0000-0000-0000-000000001234",
-    Environment = "staging",
-    Path = "/Shared"
-    Recursive = true
-};
-
-builder.AddInfisical(sharedOptions, true, TimeSpan.FromMinutes(10));
-
-var appOptions = new InfisicalOptions
-{
-    ClientId = "e2bcf5b2-0000-0000-0000-000000009876",
-    ClientSecret = "---ClientSecret---",
-    ProjectId = "47c230b4-0000-0000-0000-000000001234",
-    Environment = "staging",
-    Path = "/App1"
-};
-
-builder.Configuration
-    .SetBasePath(builder.Environment.ContentRootPath)
-    .AddInfisical(appOptions, false, TimeSpan.FromMinutes(10));
-
-```
-
-
-### Build Infisical Options from Connection String 
-
-```csharp
-using OLT.Extensions.Configuration.Infisical;
-
-var sharedOptions = new InfisicalOptions
-{
-    ClientId = "e2bcf5b2-0000-0000-0000-000000009876",
-    ClientSecret = "---ClientSecret---",
-    ProjectId = "47c230b4-0000-0000-0000-000000001234",
-    Environment = "staging",
-    Path = "/Shared"
-    Recursive = true
-};
-
-builder.AddInfisical(sharedOptions, true, TimeSpan.FromMinutes(10));
-
-var appOptions = new InfisicalOptions
-{
-    ClientId = "e2bcf5b2-0000-0000-0000-000000009876",
-    ClientSecret = "---ClientSecret---",
-    ProjectId = "47c230b4-0000-0000-0000-000000001234",
-    Environment = "staging",
-    Path = "/App1"
-};
-
-builder.Configuration
-    .SetBasePath(builder.Environment.ContentRootPath)
-    .AddInfisical(appOptions, false, TimeSpan.FromMinutes(10));
-
-```
-
----
-
-
-#### To use JSON namespacing, the keys of the secrets need to include ":" to represent nested keys and uncheck the Auto Capitalization under project settings.
-
-
-![image](https://github.com/user-attachments/assets/90bc6b9d-8f69-4743-83b4-2340c3ac9007)
+- [OLT.Extensions.Configuration.Infisical](/src/OLT.Extensions.Configuration.Infisical)
+- [OLT.Infisical.API.Wrapper](/src/OLT.Infisical.API.Wrapper)
 
 
 
-![image](https://github.com/user-attachments/assets/af35617a-697d-4ba9-b2a3-e3e5a7cc7365)
 
 
 
