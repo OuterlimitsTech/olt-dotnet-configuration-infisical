@@ -14,7 +14,7 @@ on:
 
 env:
   SOURCE_DIRECTORY: ${{ github.workspace }}
-  SOLUTION_FILE: "OLT.Extensions.Configuration.Infisical.sln"
+  SOLUTION_FILE: "OLT.Extensions.Configuration.Infisical.slnx"
 
 jobs:
   build:
