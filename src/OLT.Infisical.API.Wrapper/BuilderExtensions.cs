@@ -14,7 +14,8 @@ public static class BuilderExtensions
     {
 
         services.Configure<InfisicalApiOptions>(options => action(options));
-        services.AddSingleton<IInfisicalTokenService, InfisicalTokenService>();
+        services.AddScoped<IInfisicalTokenService, InfisicalTokenService>();
+        services.AddMemoryCache();
 
         var settings = new RefitSettings
         {
@@ -34,8 +35,8 @@ public static class BuilderExtensions
                 var opts = services.GetRequiredService<IOptions<InfisicalApiOptions>>().Value;
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.BaseAddress = new Uri(opts.SiteUrl);
-            });
-            //.AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
+            })
+            .AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
 
         services
             .AddRefitClient<IInfisicalApiSecrets>(settings)
@@ -45,8 +46,8 @@ public static class BuilderExtensions
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.BaseAddress = new Uri(opts.SiteUrl);
             })
-            .AddHttpMessageHandler(services => new InfisicalBearerTokenHandler(services.GetRequiredService<IInfisicalTokenService>()));
-        //.AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
+            .AddHttpMessageHandler(services => new InfisicalBearerTokenHandler(services.GetRequiredService<IInfisicalTokenService>()))
+            .AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
 
         services
             .AddRefitClient<IInfisicalApiFolders>(settings)
@@ -56,8 +57,8 @@ public static class BuilderExtensions
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.BaseAddress = new Uri(opts.SiteUrl);
             })
-            .AddHttpMessageHandler(services => new InfisicalBearerTokenHandler(services.GetRequiredService<IInfisicalTokenService>()));
-            //.AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
+            .AddHttpMessageHandler(services => new InfisicalBearerTokenHandler(services.GetRequiredService<IInfisicalTokenService>()))
+            .AddPolicyHandler(Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode).RetryAsync(3));
 
         return services;
     }
